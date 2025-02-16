@@ -2,6 +2,8 @@ import os
 from stable_baselines3 import A2C, PPO
 from stable_baselines3.common.vec_env import VecNormalize, VecEnv
 from stable_baselines3.common.env_util import make_vec_env
+import torch
+
 
 
 class RLTrainer:
@@ -47,11 +49,13 @@ class RLTrainer:
         """
         Train the RL model on the environment.
         """
-        
+        #check if the user has gpu or not 
+        device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        print(f"Device: {device}")
         if self.model_type == "A2C":
-            self.model = A2C("MlpPolicy", self.env, verbose=1)
+            self.model = A2C("MlpPolicy", self.env, verbose=1, device=device)
         elif self.model_type == "PPO":
-            self.model = PPO("MlpPolicy", self.env, verbose=1)
+            self.model = PPO("MlpPolicy", self.env, verbose=1, device=device)   
         else:
             raise ValueError(f"Unsupported model type: {self.model_type}")
 

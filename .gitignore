@@ -1,3 +1,4 @@
 # Ignore data and models directories
 data/
 models/
+__pycache__/
